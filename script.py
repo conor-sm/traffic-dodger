@@ -5,13 +5,10 @@ import sys
 pygame.init()
 
 running = True
-game_active = False
 menu_active = True
 game_over = False
 easy = False
-medium = False
 hard = False
-impossible = False
 
 road_img = pygame.transform.scale((pygame.image.load("road.png")), (800, 800))
 
@@ -28,23 +25,33 @@ pygame.display.set_caption("traffic-dodger")
 
 clock = pygame.time.Clock()
 
+#classes should be used to control difficulty of game
+class Easy:
+    def __init__(self):
+        print("Hello World")
+        #should have an update and draw function + anything else needed, easy mode should consist of a normal gameplay with slower cars
+
+class Hard:
+    def __init__(self):
+        print("Hello World")
+        #should have an update and draw function + anything else needed, hard mode should consist of an advanced gameplay with faster cars
+
+
 def menu():
     screen.fill((0, 0, 0)) 
+
     line_one = large.render("traffic-dodger", True, (255, 255, 255))
     line_two = small.render("Enter 1: Easy", True, (255, 255, 255))
-    line_three = small.render("2: Medium", True, (255, 255, 255))
-    line_four = small.render("3: Hard", True, (255, 255, 255))
-    line_five = small.render("4: Impossible", True, (255, 0, 0))
+    line_three = small.render("Enter 2: Hard", True, (255, 0, 0))
+
     screen.blit(line_one, ((screen_width - line_one.get_width()) // 2, (screen_height - line_one.get_height()) // 2 - 75))
     screen.blit(line_two, ((screen_width - line_two.get_width()) // 2, (screen_height - line_two.get_height()) // 2))
     screen.blit(line_three, ((screen_width - line_three.get_width()) // 2, (screen_height - line_three.get_height()) // 2 + 75))
-    screen.blit(line_four, ((screen_width - line_four.get_width()) // 2, (screen_height - line_four.get_height()) // 2 + 150))
-    screen.blit(line_five, ((screen_width - line_five.get_width()) // 2, (screen_height - line_five.get_height()) // 2 + 225))
-
 
 def game():
     screen.fill((0, 0, 0))
     screen.blit(road_img, (0, 0))
+    #should have code to control randomly spawning cars, set up the map and control player speed.
 
 while running:
 
@@ -52,10 +59,25 @@ while running:
         if event.type == pygame.QUIT:
             running = False
             sys.exit()
+        if menu_active and event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_1:
+                easy = True
+                menu_active = False
+            if event.key == pygame.K_2:
+                hard = True
+                menu_active = False
 
     if menu_active:
         menu()
     
+    elif easy:
+        print("Easy")
+        game()
+    
+    elif hard:
+        print("Hard")
+        game()
+
     clock.tick(60)
     pygame.display.update()
 
